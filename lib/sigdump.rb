@@ -83,6 +83,8 @@ module Sigdump
 
     io.flush
     nil
+  rescue => e
+    puts "#{e.class} #{e.message} #{e.backtrace.join("\\n")}"
   end
 
   def self.dump_gc_stat(io)
