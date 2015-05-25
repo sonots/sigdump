@@ -50,6 +50,8 @@ module Sigdump
       io.write "%10s: %s\n" % [_fn(v), k]
     }
 
+    puts "  before ObjectSpace.each_object"
+
     string_size = 0
     array_size = 0
     hash_size = 0
@@ -66,6 +68,8 @@ module Sigdump
       end
     }
 
+    puts "  After ObjectSpace.each_object"
+
     io.write "  All objects:\n"
     cmap.sort_by {|k,v| -v }.each {|k,v|
       io.write "%10s: %s\n" % [_fn(v), k]
@@ -74,6 +78,8 @@ module Sigdump
     io.write "  String #{_fn(string_size)} bytes\n"
     io.write "   Array #{_fn(array_size)} elements\n"
     io.write "    Hash #{_fn(hash_size)} pairs\n"
+
+    puts "  After io.write"
 
     io.flush
     nil
