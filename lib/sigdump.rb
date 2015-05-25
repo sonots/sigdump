@@ -12,11 +12,18 @@ module Sigdump
 
   def self.dump(path=ENV['SIGDUMP_PATH'])
     _open_dump_path(path) do |io|
-      io.write "Sigdump at #{Time.now} process #{Process.pid} (#{$0})\n"
-      dump_all_thread_backtrace(io)
-      dump_gc_stat(io)
-      dump_object_count(io)
-      dump_gc_profiler_result(io)
+      begin
+        io.write "Sigdump at #{Time.now} process #{Process.pid} (#{$0})\n"
+        dump_all_thread_backtrace(io)
+        dump_gc_stat(io)
+        dump_object_count(io)
+        dump_gc_profiler_result(io)
+      rescue => e
+        io.write "#{e.class} #{e.message}\n"
+        e.backtrace.each do |bt|
+          io.write "  #{bt}\n"
+        end
+      end
     end
   end
 
